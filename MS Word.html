@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LMS Coding Challenge</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      background: #121212;
+      color: white;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar {
+      width: 260px;
+      background: #1c1c1c;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sidebar button {
+      padding: 12px;
+      background: #2c2c2c;
+      border: none;
+      color: #d4af37;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: 0.3s;
+      text-align: left;
+    }
+
+    .sidebar button:hover {
+      background: #3a3a3a;
+    }
+
+    .sidebar button:disabled {
+      background: #555;
+      color: #999;
+      cursor: not-allowed;
+    }
+
+    /* CONTENT */
+
+    .content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 450px;
+      border: none;
+      border-radius: 12px;
+    }
+
+    .card {
+      margin-top: 20px;
+      display: none;
+    }
+
+    /* CHALLENGE */
+
+    .container {
+      width: 100%;
+      background: #1a1a1a;
+      padding: 25px;
+      border-radius: 15px;
+      border: 2px solid #ff8800;
+      box-shadow: 0 0 20px rgba(255, 136, 0, 0.4);
+    }
+
+    .container h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ff8800;
+    }
+
+    .instruction {
+      background: #262626;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      border-left: 5px solid #ff8800;
+    }
+
+    .instruction strong {
+      color: #ff8800;
+      font-size: 18px;
+    }
+
+    .instruction ul {
+      padding-left: 20px;
+      line-height: 1.9;
+      margin-top: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 260px;
+      background: #111111;
+      color: white;
+      border: 2px solid #444;
+      border-radius: 10px;
+      padding: 15px;
+      resize: none;
+      font-size: 15px;
+      outline: none;
+      margin-top: 10px;
+    }
+
+    textarea:focus {
+      border-color: #ff8800;
+      box-shadow: 0 0 10px rgba(255, 136, 0, 0.5);
+    }
+
+    .btn {
+      margin-top: 15px;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #ff8800;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background: #ff6600;
+    }
+
+    .result {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .pass {
+      color: #00ff88;
+    }
+
+    .fail {
+      color: #ff4444;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+
+  <div class="sidebar" id="sidebar"></div>
+
+  <!-- CONTENT -->
+
+  <div class="content">
+
+    <h2 id="title">Select Lesson</h2>
+
+    <div id="video"></div>
+
+    <div class="card" id="quizBox">
+
+      <div class="container">
+
+        <h1 id="challengeTitle">🔥 Coding Challenge</h1>
+
+        <div class="instruction" id="instructionBox"></div>
+
+        <textarea id="codeInput" spellcheck="false"></textarea>
+
+        <button class="btn" onclick="checkCode()">
+          Submit Code
+        </button>
+
+        <div class="result" id="result"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- YOUTUBE API -->
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+  <script>
+
+    /* LESSONS */
+
+    const lessons = [
+
+      {
+        title: "HTML Lesson",
+        video: "sva0ZRfFx4k",
+
+        challenge: {
+          title: "🔥 HTML Challenge",
+
+          instructions: [
+            "Close the h1 tag properly.",
+            "Add br tag between lines.",
+            "Close paragraph tag correctly."
+          ],
+
+          starterCode: `<h1>Welcome<h1>
+
+<p>
+This is line one.
+This is line two.
+<p>`,
+
+          correctCode: `<h1>Welcome</h1>
+
+<p>
+This is line one.
+<br>
+This is line two.
+</p>`
+        }
+      },
+
+      {
+        title: "CSS Lesson",
+        video: "Se_e5h9vtms",
+
+        challenge: {
+          title: "🎨 CSS Challenge",
+
+          instructions: [
+            "Change text color to red.",
+            "Add black background.",
+            "Center the text."
+          ],
+
+          starterCode: `h1{
+
+}`,
+
+          correctCode: `h1{
+color:red;
+background:black;
+text-align:center;
+}`
+        }
+      },
+
+      {
+        title: "JavaScript Lesson",
+        video: "W6NZfCO5SIk",
+
+        challenge: {
+          title: "⚡ JavaScript Challenge",
+
+          instructions: [
+            "Create a variable called name.",
+            "Store your name inside it.",
+            "Print using console.log()."
+          ],
+
+          starterCode: `// Write code here`,
+
+          correctCode: `let name="Ahmed";
+console.log(name);`
+        }
+      },
+      {
+        title: "JavaScript Lesson",
+        video: "W6NZfCO5SIk",
+
+        challenge: {
+          title: "⚡ JavaScript Challenge",
+
+          instructions: [
+            "Create a variable called name.",
+            "Store your name inside it.",
+            "Print using console.log()."
+          ],
+
+          starterCode: `// Write code here`,
+
+          correctCode: `let name="Ahmed";
+console.log(name);`
+        }
+      }
+
+    ];
+
+    let currentLesson = 0;
+
+    /* STORAGE */
+
+    let progress = JSON.parse(localStorage.getItem("progress"));
+
+    if (
+      !progress ||
+      progress.unlockedVideos.length !== lessons.length
+    ) {
+
+      progress = {
+        unlockedVideos: lessons.map((_, i) => i === 0),
+        unlockedQuizzes: lessons.map(() => false)
+      };
+
+      localStorage.setItem(
+        "progress",
+        JSON.stringify(progress)
+      );
+    }
+
+    function saveProgress() {
+      localStorage.setItem(
+        "progress",
+        JSON.stringify(progress)
+      );
+    }
+
+    /* SIDEBAR */
+
+    const sidebar = document.getElementById("sidebar");
+
+    const videoButtons = [];
+    const quizButtons = [];
+
+    lessons.forEach((lesson, i) => {
+
+      let vbtn = document.createElement("button");
+
+      vbtn.innerText =
+        "📺 " + lesson.title + " Video";
+
+      vbtn.onclick = () => showVideo(i);
+
+      sidebar.appendChild(vbtn);
+
+      videoButtons.push(vbtn);
+
+      let qbtn = document.createElement("button");
+
+      qbtn.innerText =
+        "💻 " + lesson.title + " Challenge";
+
+      qbtn.onclick = () => startQuiz(i);
+
+      sidebar.appendChild(qbtn);
+
+      quizButtons.push(qbtn);
+
+    });
+
+    function applyLocks() {
+
+      videoButtons.forEach((btn, i) => {
+        btn.disabled =
+          !progress.unlockedVideos[i];
+      });
+
+      quizButtons.forEach((btn, i) => {
+        btn.disabled =
+          !progress.unlockedQuizzes[i];
+      });
+
+    }
+
+    applyLocks();
+
+    /* SHOW VIDEO */
+
+    function showVideo(i) {
+
+      currentLesson = i;
+
+      document.getElementById("title")
+        .innerText = lessons[i].title;
+
+      document.getElementById("video")
+        .innerHTML = `
+        
+<iframe
+id="ytVideo"
+src="https://www.youtube.com/embed/${lessons[i].video}?enablejsapi=1"
+allowfullscreen>
+</iframe>
+`;
+
+      document.getElementById("quizBox")
+        .style.display = "none";
+
+      setTimeout(() => {
+
+        new YT.Player("ytVideo", {
+
+          events: {
+
+            onStateChange: function (event) {
+
+              if (event.data === 0) {
+
+                progress.unlockedQuizzes[i] = true;
+
+                saveProgress();
+
+                applyLocks();
+
+                alert("🎉 Challenge Unlocked!");
+
+              }
+
+            }
+
+          }
+
+        });
+
+      }, 500);
+
+    }
+
+    /* START QUIZ */
+
+    function startQuiz(i) {
+
+      currentLesson = i;
+
+      document.getElementById("video")
+        .innerHTML = "";
+
+      document.getElementById("quizBox")
+        .style.display = "block";
+
+      document.getElementById("result")
+        .innerHTML = "";
+
+      const challenge = lessons[i].challenge;
+
+      document.getElementById("challengeTitle")
+        .innerText = challenge.title;
+
+      let html = `
+<strong>Instructions:</strong>
+<ul>
+`;
+
+      challenge.instructions.forEach(item => {
+        html += `<li>${item}</li>`;
+      });
+
+      html += `</ul>`;
+
+      document.getElementById("instructionBox")
+        .innerHTML = html;
+
+      document.getElementById("codeInput")
+        .value = challenge.starterCode;
+
+    }
+
+    /* NORMALIZE */
+
+    function normalizeCode(code) {
+
+      return code
+        .replace(/\s+/g, '')
+        .toLowerCase()
+        .trim();
+
+    }
+
+    /* CHECK CODE */
+
+    function checkCode() {
+
+      const userCode =
+        document.getElementById("codeInput").value;
+
+      const correctCode =
+        lessons[currentLesson]
+          .challenge.correctCode;
+
+      const result =
+        document.getElementById("result");
+
+      if (
+        normalizeCode(userCode) ===
+        normalizeCode(correctCode)
+      ) {
+
+        result.innerHTML = "✅ PASS";
+        result.className = "result pass";
+
+        /* UNLOCK NEXT VIDEO */
+
+        if (currentLesson + 1 < lessons.length) {
+
+          progress.unlockedVideos[
+            currentLesson + 1
+          ] = true;
+
+          alert("🎉 Next Lesson Unlocked!");
+
+        } else {
+
+          alert("🏆 All Lessons Completed!");
+
+        }
+
+        saveProgress();
+        applyLocks();
+
+      }
+
+      else {
+
+        result.innerHTML = "❌ Try Again";
+        result.className = "result fail";
+
+      }
+
+    }
+
+  </script>
+
+</body>
+
+</html>
